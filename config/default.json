@@ -1,0 +1,5 @@
+{
+    "port": 5000,
+    "jwtSecret": "diary",
+    "mongoUri": "mongodb+srv://dbSemaru:dbSemaru120399@cluster0.ieifs0p.mongodb.net/?retryWrites=true&w=majority"
+}

@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-
-import { AiFillCaretLeft, AiFillCaretRight } from 'react-icons/ai';
+import NavigationFromDate from './NavigatonFromDate';
 
 const StyledNavbar = styled.div`
     /* 
@@ -17,88 +16,56 @@ const StyledNavbar = styled.div`
     margin-bottom: 10px;
 `;
 
-const StyledDataHeader = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 34px;
-    font-weight: 900;
-    color: black;
-    width: 350px;
-`;
-
-const StyledNavContainer = styled.div`
-    display: flex;
-    align-items: center;
-`;
-const StyledButton = styled.button`
-    margin: 0 5px;
-`;
-
 const Navbar = ({ monthNames, date, setDate }) => {
     return (
         <StyledNavbar>
-            <StyledDataHeader>
-                <StyledButton
-                    onClick={() => {
-                        setDate(
-                            new Date(
-                                date.getFullYear(),
-                                date.getMonth() - 1,
-                                date.getDate()
-                            )
-                        );
-                    }}
-                >
-                    <AiFillCaretLeft size={30} fill='#000' />
-                </StyledButton>
+            <NavigationFromDate
+                setPrevDate={() => {
+                    setDate(
+                        new Date(
+                            date.getFullYear(),
+                            date.getMonth() - 1,
+                            date.getDate()
+                        )
+                    );
+                }}
+                setNextDate={() => {
+                    setDate(
+                        new Date(
+                            date.getFullYear(),
+                            date.getMonth() + 1,
+                            date.getDate()
+                        )
+                    );
+                }}
+            >
                 <p>
                     {monthNames[date.getMonth()]} {date.getFullYear()}
                 </p>
-                <StyledButton
-                    onClick={() => {
-                        setDate(
-                            new Date(
-                                date.getFullYear(),
-                                date.getMonth() + 1,
-                                date.getDate()
-                            )
-                        );
-                    }}
-                >
-                    <AiFillCaretRight size={30} fill='#000' />
-                </StyledButton>
-            </StyledDataHeader>
+            </NavigationFromDate>
 
-            <StyledNavContainer>
-                <StyledButton
-                    onClick={() => {
-                        setDate(
-                            new Date(
-                                date.getFullYear(),
-                                date.getMonth(),
-                                date.getDate() - 7
-                            )
-                        );
-                    }}
-                >
-                    <AiFillCaretLeft size={30} fill='#000' />
-                </StyledButton>
+            <NavigationFromDate
+                setPrevDate={() => {
+                    setDate(
+                        new Date(
+                            date.getFullYear(),
+                            date.getMonth(),
+                            date.getDate() - 7
+                        )
+                    );
+                }}
+                setNextDate={() => {
+                    setDate(
+                        new Date(
+                            date.getFullYear(),
+                            date.getMonth(),
+                            date.getDate() + 7
+                        )
+                    );
+                }}
+            >
                 <p>неделя</p>
-                <StyledButton
-                    onClick={() => {
-                        setDate(
-                            new Date(
-                                date.getFullYear(),
-                                date.getMonth(),
-                                date.getDate() + 7
-                            )
-                        );
-                    }}
-                >
-                    <AiFillCaretRight size={30} fill='#000' />
-                </StyledButton>
-            </StyledNavContainer>
+            </NavigationFromDate>
         </StyledNavbar>
     );
 };

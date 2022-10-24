@@ -26,7 +26,9 @@ function App() {
     const [tasks, setTasks] = useState([task]);
     const [allTasks, setAllTasks] = useState([{ date: new Date(), tasks }]);
 
-    useEffect(() => {}, [tasks]);
+    useEffect(() => {
+        console.log('changed', tasks);
+    }, [allTasks, tasks]);
 
     let weekDays = [
         'Воскресенье',
@@ -55,13 +57,7 @@ function App() {
     return (
         <StyledApp from={colorsTheme.from} to={colorsTheme.to}>
             <Navbar monthNames={monthNames} date={date} setDate={setDate} />
-            <Main
-                monthNames={monthNames}
-                date={date}
-                weekDays={weekDays}
-                allTasks={allTasks}
-                setTasks={setTasks}
-            />
+            <Main monthNames={monthNames} date={date} weekDays={weekDays} />
         </StyledApp>
     );
 }

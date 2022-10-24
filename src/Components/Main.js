@@ -12,7 +12,7 @@ const StyledMain = styled.div`
     height: calc(100% - 55px); // 45px - это высота шапки margin + padding
 `;
 
-const Main = ({ date, monthNames, weekDays, allTasks, setTasks }) => {
+const Main = ({ date, monthNames, weekDays, allTasks }) => {
     return (
         <StyledMain>
             {weekDays.map((day, index) => (
@@ -27,8 +27,6 @@ const Main = ({ date, monthNames, weekDays, allTasks, setTasks }) => {
                         )
                     }
                     weekDays={weekDays}
-                    allTasks={allTasks}
-                    setTasks={setTasks}
                 />
             ))}
             <Day />

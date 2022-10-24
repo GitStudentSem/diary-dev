@@ -93,17 +93,11 @@ const StyledButton = styled.button`
     }
 `;
 
-const Day = ({ date, monthNames, weekDays, allTasks, setTasks }) => {
+const Day = ({ date, monthNames, weekDays }) => {
     const [text, setText] = useState('');
     const [isImportant, setIsImportant] = useState(false);
+    const [currentTasks, setCurrentTasks] = useState([]);
 
-    let isCurrentDay = (task) => {
-        return (
-            task.date.getFullYear() === date.getFullYear() &&
-            task.date.getMonth() === date.getMonth() &&
-            task.date.getDate() === date.getDate()
-        );
-    };
     return (
         <StyledDay>
             <StyledHeader>
@@ -146,44 +140,35 @@ const Day = ({ date, monthNames, weekDays, allTasks, setTasks }) => {
                 <StyledButton
                     onClick={(e) => {
                         e.preventDefault();
-                        console.log(allTasks);
-                        // isCurrentDay(task);
-
-                        allTasks &&
-                            setTasks([
-                                ...allTasks.tasks,
-                                {
-                                    text,
-                                    isImportant,
-                                },
-                            ]);
+                        setCurrentTasks([
+                            ...currentTasks,
+                            { text, isImportant },
+                        ]);
+                        setText('');
+                        setIsImportant(false);
                     }}
+                    disabled={!text}
                 >
-                    <AiFillCheckCircle size={20} fill='darkcyan' />
+                    <AiFillCheckCircle
+                        size={20}
+                        fill={text ? 'darkcyan' : 'gray'}
+                    />
                 </StyledButton>
             </StyledForm>
 
             <StyledTaskList>
-                {allTasks &&
-                    allTasks.map((task) => {
-                        if (isCurrentDay(task)) {
-                            return task.tasks.map((taskItem, index) => {
-                                return (
-                                    <StyledTask key={taskItem.text + index}>
-                                        <AiFillStar
-                                            size={30}
-                                            fill={
-                                                isImportant ? 'orange' : 'grey'
-                                            }
-                                        />
-                                        <StyledTaskText>
-                                            {taskItem.text}
-                                        </StyledTaskText>
-                                    </StyledTask>
-                                );
-                            });
-                        }
-                    })}
+                {currentTasks.map((taskItem, index) => {
+                    return (
+                        <StyledTask key={taskItem.text + index}>
+                            <AiFillStar
+                                size={20}
+                                fill={isImportant ? 'orange' : 'grey'}
+                                style={{ flexShrink: 0 }}
+                            />
+                            <StyledTaskText>{taskItem.text}</StyledTaskText>
+                        </StyledTask>
+                    );
+                })}
             </StyledTaskList>
         </StyledDay>
     );

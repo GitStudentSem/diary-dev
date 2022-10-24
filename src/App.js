@@ -19,17 +19,6 @@ function App() {
     const [date, setDate] = useState(new Date());
     const [colorsTheme, setcolorsTheme] = useState(useSetColor());
 
-    const [task, setTask] = useState({
-        text: 'полное описание задачи пригодится нам потом',
-        isImportant: true,
-    });
-    const [tasks, setTasks] = useState([task]);
-    const [allTasks, setAllTasks] = useState([{ date: new Date(), tasks }]);
-
-    useEffect(() => {
-        console.log('changed', tasks);
-    }, [allTasks, tasks]);
-
     let weekDays = [
         'Воскресенье',
         'Понедельник',

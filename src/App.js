@@ -1,7 +1,7 @@
 import './App.css';
 import Navbar from './Components/Navbar';
 import Main from './Components/Main';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/macro';
 import useSetColor from './Hooks/useSetColor';
 
@@ -23,18 +23,12 @@ function App() {
         text: 'полное описание задачи пригодится нам потом',
         isImportant: true,
     });
-    const [allTasks, setAllTasks] = useState([
-        {
-            dateObj: { year: 2022, day: 24 },
-            tasks: [task, task, task, task],
-        },
-        {
-            dateObj: { year: 2022, day: 25 },
-            tasks: [task, task, task, task, task, task],
-        },
-    ]);
+    const [tasks, setTasks] = useState([task]);
+    const [allTasks, setAllTasks] = useState([{ date: new Date(), tasks }]);
 
-    let days = [
+    useEffect(() => {}, [tasks]);
+
+    let weekDays = [
         'Воскресенье',
         'Понедельник',
         'Вторник',
@@ -60,12 +54,13 @@ function App() {
 
     return (
         <StyledApp from={colorsTheme.from} to={colorsTheme.to}>
-            <Navbar monthNames={monthNames} date={date} />
+            <Navbar monthNames={monthNames} date={date} setDate={setDate} />
             <Main
                 monthNames={monthNames}
                 date={date}
-                days={days}
+                weekDays={weekDays}
                 allTasks={allTasks}
+                setTasks={setTasks}
             />
         </StyledApp>
     );

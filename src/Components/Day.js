@@ -70,6 +70,7 @@ const StyledTaskText = styled.p`
 
 const StyledForm = styled.form`
     display: flex;
+    margin-bottom: 5px;
 `;
 const StyledInput = styled.input`
     outline: none;
@@ -92,15 +93,15 @@ const StyledButton = styled.button`
     }
 `;
 
-const Day = ({ date, monthNames, days, allTasks, indexItem }) => {
+const Day = ({ date, monthNames, weekDays, allTasks, setTasks }) => {
     const [text, setText] = useState('');
     const [isImportant, setIsImportant] = useState(false);
-    console.log(isImportant);
 
     let isCurrentDay = (task) => {
         return (
-            task.dateObj.year === date.getFullYear() &&
-            task.dateObj.day === date.getDate()
+            task.date.getFullYear() === date.getFullYear() &&
+            task.date.getMonth() === date.getMonth() &&
+            task.date.getDate() === date.getDate()
         );
     };
     return (
@@ -113,11 +114,7 @@ const Day = ({ date, monthNames, days, allTasks, indexItem }) => {
                         </StyledHeaderDay>
 
                         <StyledHeaderDayOfWeek>
-                            {/* Альтернативный вариант */}
-                            {/* {new Intl.DateTimeFormat('ru-RU', {
-                        weekday: 'long',
-                    }).format(date)} */}
-                            {days[date.getDay()]}
+                            {weekDays[date.getDay()]}
                         </StyledHeaderDayOfWeek>
                     </>
                 ) : (
@@ -146,7 +143,22 @@ const Day = ({ date, monthNames, days, allTasks, indexItem }) => {
                     />
                 </StyledButton>
 
-                <StyledButton>
+                <StyledButton
+                    onClick={(e) => {
+                        e.preventDefault();
+                        console.log(allTasks);
+                        // isCurrentDay(task);
+
+                        allTasks &&
+                            setTasks([
+                                ...allTasks.tasks,
+                                {
+                                    text,
+                                    isImportant,
+                                },
+                            ]);
+                    }}
+                >
                     <AiFillCheckCircle size={20} fill='darkcyan' />
                 </StyledButton>
             </StyledForm>

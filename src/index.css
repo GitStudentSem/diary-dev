@@ -11,7 +11,12 @@ button {
     margin: 0;
     padding: 0;
 }
-
+button {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
         monospace;

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-
+import Navbar from './Navbar';
 import Day from './Day';
 
 const StyledMain = styled.div`
@@ -12,25 +12,28 @@ const StyledMain = styled.div`
     height: calc(100% - 55px); // 45px - это высота шапки margin + padding
 `;
 
-const Main = ({ date, monthNames, weekDays, allTasks }) => {
+const Main = ({ date, monthNames, weekDays, setDate }) => {
     return (
-        <StyledMain>
-            {weekDays.map((day, index) => (
-                <Day
-                    key={index}
-                    monthNames={monthNames}
-                    date={
-                        new Date(
-                            date.getFullYear(),
-                            date.getMonth(),
-                            date.getDate() + index
-                        )
-                    }
-                    weekDays={weekDays}
-                />
-            ))}
-            <Day />
-        </StyledMain>
+        <>
+            <Navbar monthNames={monthNames} date={date} setDate={setDate} />
+            <StyledMain>
+                {weekDays.map((day, index) => (
+                    <Day
+                        key={index}
+                        monthNames={monthNames}
+                        date={
+                            new Date(
+                                date.getFullYear(),
+                                date.getMonth(),
+                                date.getDate() + index
+                            )
+                        }
+                        weekDays={weekDays}
+                    />
+                ))}
+                <Day />
+            </StyledMain>
+        </>
     );
 };
 

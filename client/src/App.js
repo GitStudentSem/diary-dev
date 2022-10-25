@@ -1,9 +1,9 @@
-import './App.css';
-import Navbar from './Components/Navbar';
 import Main from './Components/Main';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 import useSetColor from './Hooks/useSetColor';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import LoginPage from './Components/LoginPage';
 
 const StyledApp = styled.div`
     background: #fff;
@@ -44,10 +44,24 @@ function App() {
     ];
 
     return (
-        <StyledApp from={colorsTheme.from} to={colorsTheme.to}>
-            <Navbar monthNames={monthNames} date={date} setDate={setDate} />
-            <Main monthNames={monthNames} date={date} weekDays={weekDays} />
-        </StyledApp>
+        <BrowserRouter>
+            <StyledApp from={colorsTheme.from} to={colorsTheme.to}>
+                <Routes>
+                    <Route
+                        path='/'
+                        element={
+                            <Main
+                                monthNames={monthNames}
+                                date={date}
+                                weekDays={weekDays}
+                                setDate={setDate}
+                            />
+                        }
+                    />
+                    <Route path='/login' element={<LoginPage />} />
+                </Routes>
+            </StyledApp>
+        </BrowserRouter>
     );
 }
 

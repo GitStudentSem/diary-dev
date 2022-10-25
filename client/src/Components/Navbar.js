@@ -1,7 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import NavigationFromDate from './NavigatonFromDate';
-
+import { FaUserAlt } from 'react-icons/fa';
 const StyledNavbar = styled.div`
     /* 
         Изменение высоты данного блока требует 
@@ -14,6 +15,22 @@ const StyledNavbar = styled.div`
     position: relative;
     padding: 0 20px;
     margin-bottom: 10px;
+`;
+const StyledButton = styled.button`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    transition: all 0.3s;
+    padding: 5px;
+    border-radius: 5px;
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
 `;
 
 const Navbar = ({ monthNames, date, setDate }) => {
@@ -39,10 +56,16 @@ const Navbar = ({ monthNames, date, setDate }) => {
                     );
                 }}
             >
-                <p>
+                <p style={{ color: 'rgba(255, 255, 255, 0.85)' }}>
                     {monthNames[date.getMonth()]} {date.getFullYear()}
                 </p>
             </NavigationFromDate>
+
+            <StyledButton disabled>
+                <Link to='/login'>
+                    <FaUserAlt size={20} fill='rgba(255, 255, 255, 0.8)' />
+                </Link>
+            </StyledButton>
 
             <NavigationFromDate
                 setPrevDate={() => {

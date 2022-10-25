@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
-import { AiFillCheckCircle, AiFillStar } from 'react-icons/ai';
+import { AiFillCheckCircle, AiFillDelete } from 'react-icons/ai';
+import Star from './Star';
 
 const StyledDay = styled.div`
     position: relative;
@@ -8,8 +9,8 @@ const StyledDay = styled.div`
     border-radius: 10px;
     height: 50%;
     max-height: 48%;
-    background-color: #fff;
-    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 5px;
     overflow: hidden;
 `;
 
@@ -23,44 +24,50 @@ const StyledHeader = styled.div`
 const StyledHeaderDay = styled.p`
     font-weight: 500;
     font-size: 18px;
+    color: rgba(255, 255, 255, 0.8);
 `;
 const StyledHeaderDayOfWeek = styled(StyledHeaderDay)`
-    opacity: 0.5;
+    color: rgba(255, 255, 255, 0.6);
 `;
 const StyledTaskList = styled.ul`
     list-style-type: none;
     padding: 0;
+    padding-right: 5px;
+
     height: calc(100% - 50px);
     /* height: 200px; */
     /* max-height: 250px; */
     overflow-y: auto;
     &::-webkit-scrollbar {
-        width: 8px; /* ширина scrollbar */
+        width: 6px; /* ширина scrollbar */
     }
     &::-webkit-scrollbar-track {
-        background: #ccc; /* цвет дорожки */
+        background: rgba(255, 255, 255, 0.2); /* цвет дорожки */
         border-radius: 20px;
     }
     &::-webkit-scrollbar-thumb {
-        background-color: darkcyan; /* цвет плашки */
+        background-color: rgba(255, 255, 255, 0.6); /* цвет плашки */
         border-radius: 20px; /* закругления плашки */
-        border: 3px solid #ccc; /* padding вокруг плашки */
+        border: 3px solid rgba(255, 255, 255, 0.2); /* padding вокруг плашки */
     }
 `;
 
 const StyledTask = styled.li`
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 5px 0 5px 5px;
     width: 100%;
     transition: 0.3s;
     border-radius: 10px;
     cursor: pointer;
     &:hover {
-        background-color: rgba(0, 139, 139, 0.7);
+        background-color: rgba(255, 255, 255, 0.2);
     }
 `;
 const StyledTaskText = styled.p`
+    flex-grow: 1;
+    text-align: start;
     white-space: nowrap;
     text-overflow: ellipsis;
     padding-right: 10px;
@@ -76,8 +83,17 @@ const StyledInput = styled.input`
     outline: none;
     border: none;
     flex: 1;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 2px 5px;
+    border-radius: 5px;
+    &::placeholder {
+        color: rgb(255, 255, 255);
+    }
 `;
 const StyledButton = styled.button`
+    display: flex;
+    align-items: center;
+    justify-content: center;
     outline: none;
     border: none;
     background-color: transparent;
@@ -89,7 +105,7 @@ const StyledButton = styled.button`
     margin-left: 5px;
     border-radius: 5px;
     &:hover {
-        background-color: #ccc;
+        background-color: rgba(255, 255, 255, 0.2);
     }
 `;
 
@@ -125,17 +141,7 @@ const Day = ({ date, monthNames, weekDays }) => {
                     }}
                     placeholder='Какие планы?'
                 />
-                <StyledButton
-                    onClick={(e) => {
-                        e.preventDefault();
-                        setIsImportant(!isImportant);
-                    }}
-                >
-                    <AiFillStar
-                        size={20}
-                        fill={isImportant ? 'orange' : 'grey'}
-                    />
-                </StyledButton>
+                <Star setValue={setIsImportant} value={isImportant} />
 
                 <StyledButton
                     onClick={(e) => {
@@ -151,7 +157,11 @@ const Day = ({ date, monthNames, weekDays }) => {
                 >
                     <AiFillCheckCircle
                         size={20}
-                        fill={text ? 'darkcyan' : 'gray'}
+                        fill={
+                            text
+                                ? 'rgba(255, 255, 255)'
+                                : 'rgba(255, 255, 255, 0.6)'
+                        }
                     />
                 </StyledButton>
             </StyledForm>
@@ -160,12 +170,18 @@ const Day = ({ date, monthNames, weekDays }) => {
                 {currentTasks.map((taskItem, index) => {
                     return (
                         <StyledTask key={taskItem.text + index}>
-                            <AiFillStar
-                                size={20}
-                                fill={isImportant ? 'orange' : 'grey'}
-                                style={{ flexShrink: 0 }}
+                            <Star
+                                setValue={setIsImportant}
+                                value={isImportant}
                             />
+
                             <StyledTaskText>{taskItem.text}</StyledTaskText>
+                            <StyledButton>
+                                <AiFillDelete
+                                    size={20}
+                                    fill='rgba(255, 255, 255, 0.8)'
+                                />
+                            </StyledButton>
                         </StyledTask>
                     );
                 })}

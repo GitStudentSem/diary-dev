@@ -61,8 +61,8 @@ const Navbar = ({ monthNames, date, setDate }) => {
             </NavigationFromDate>
 
             <StyledButton disabled>
-                <Link to='/login'>
-                    <FaUserAlt size={20} fill='rgba(255, 255, 255, 0.8)' />
+                <Link to='/account'>
+                    <FaUserAlt size={30} fill='rgba(255, 255, 255, 0.8)' />
                 </Link>
             </StyledButton>
 

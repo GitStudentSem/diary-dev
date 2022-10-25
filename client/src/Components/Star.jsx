@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components/macro';
-import { AiFillCheckCircle, AiFillStar } from 'react-icons/ai';
+import { AiFillStar } from 'react-icons/ai';
 
 const StyledButton = styled.button`
     display: flex;

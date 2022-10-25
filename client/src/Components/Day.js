@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/macro';
 import { AiFillCheckCircle, AiFillDelete } from 'react-icons/ai';
 import Star from './Star';
@@ -97,6 +97,21 @@ const Day = ({ date, monthNames, weekDays }) => {
     const [isImportant, setIsImportant] = useState(false);
     const [currentTasks, setCurrentTasks] = useState([]);
 
+    useEffect(() => {
+        const saved = JSON.parse(localStorage.getItem('currentTasks') || '[]');
+        setCurrentTasks(saved);
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('currentTasks', JSON.stringify(currentTasks));
+    }, [currentTasks]);
+
+    const deleteTask = (index) => {
+        const reducedArr = [...currentTasks];
+        reducedArr.splice(index, 1);
+        setCurrentTasks(reducedArr);
+    };
+
     return (
         <StyledDay>
             <StyledHeader>
@@ -159,7 +174,11 @@ const Day = ({ date, monthNames, weekDays }) => {
                             />
 
                             <StyledTaskText>{taskItem.text}</StyledTaskText>
-                            <StyledButton>
+                            <StyledButton
+                                onClick={() => {
+                                    deleteTask(index);
+                                }}
+                            >
                                 <AiFillDelete
                                     size={20}
                                     fill='rgba(255, 255, 255, 0.8)'

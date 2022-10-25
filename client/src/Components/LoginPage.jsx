@@ -6,7 +6,6 @@ import { RiLoginCircleFill } from 'react-icons/ri';
 
 const StyledLoginPage = styled.div`
     height: 100%;
-    padding: 5px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

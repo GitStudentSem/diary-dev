@@ -7,6 +7,7 @@ import LoginPage from './Components/LoginPage';
 
 const StyledApp = styled.div`
     background: #fff;
+    padding: 5px;
     height: 100vh;
     background: radial-gradient(
         circle,

@@ -4,7 +4,6 @@ import Navbar from './Navbar';
 import Day from './Day';
 
 const StyledWrapper = styled.div`
-    padding: 5px;
     height: calc(100% - 55px); // 45px - это высота шапки margin + padding
 `;
 const StyledMain = styled.div`

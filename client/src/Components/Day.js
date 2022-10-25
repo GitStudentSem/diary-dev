@@ -31,32 +31,16 @@ const StyledHeaderDayOfWeek = styled(StyledHeaderDay)`
 `;
 const StyledTaskList = styled.ul`
     list-style-type: none;
-    padding: 0;
-    padding-right: 5px;
-
-    height: calc(100% - 50px);
-    /* height: 200px; */
-    /* max-height: 250px; */
+    padding: 0 5px 0 0;
+    height: calc(100% - 75px); // Высота зависит от шапки
     overflow-y: auto;
-    &::-webkit-scrollbar {
-        width: 6px; /* ширина scrollbar */
-    }
-    &::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.2); /* цвет дорожки */
-        border-radius: 20px;
-    }
-    &::-webkit-scrollbar-thumb {
-        background-color: rgba(255, 255, 255, 0.6); /* цвет плашки */
-        border-radius: 20px; /* закругления плашки */
-        border: 3px solid rgba(255, 255, 255, 0.2); /* padding вокруг плашки */
-    }
 `;
 
 const StyledTask = styled.li`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 5px 0 5px 5px;
+    padding: 5px;
     width: 100%;
     transition: 0.3s;
     border-radius: 10px;
@@ -77,7 +61,6 @@ const StyledTaskText = styled.p`
 
 const StyledForm = styled.form`
     display: flex;
-    margin-bottom: 5px;
 `;
 const StyledInput = styled.input`
     outline: none;

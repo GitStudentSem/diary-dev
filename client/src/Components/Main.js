@@ -3,18 +3,21 @@ import styled from 'styled-components/macro';
 import Navbar from './Navbar';
 import Day from './Day';
 
+const StyledWrapper = styled.div`
+    padding: 5px;
+    height: calc(100% - 55px); // 45px - это высота шапки margin + padding
+`;
 const StyledMain = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: stretch;
-    padding: 0 20px;
-    height: calc(100% - 55px); // 45px - это высота шапки margin + padding
+    height: 100%;
 `;
 
 const Main = ({ date, monthNames, weekDays, setDate }) => {
     return (
-        <>
+        <StyledWrapper>
             <Navbar monthNames={monthNames} date={date} setDate={setDate} />
             <StyledMain>
                 {weekDays.map((day, index) => (
@@ -33,7 +36,7 @@ const Main = ({ date, monthNames, weekDays, setDate }) => {
                 ))}
                 <Day />
             </StyledMain>
-        </>
+        </StyledWrapper>
     );
 };
 

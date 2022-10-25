@@ -13,7 +13,6 @@ const StyledNavbar = styled.div`
     justify-content: space-between;
     align-items: center;
     position: relative;
-    padding: 0 20px;
     margin-bottom: 10px;
 `;
 const StyledButton = styled.button`

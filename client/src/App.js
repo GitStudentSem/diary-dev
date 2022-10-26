@@ -20,8 +20,33 @@ const StyledApp = styled.div`
 function App() {
     const [date, setDate] = useState(new Date());
 
+    const generateColor = () => {
+        // setTheArray((oldArray) => [...oldArray, newElement]);
+        const getRandomColor = () => {
+            let letters = '0123456789ABCD';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * letters.length)];
+            }
+            return color;
+        };
+        console.log('generated');
+        return {
+            from: getRandomColor(),
+            to: getRandomColor(),
+        };
+    };
+
+    const [colorsTheme, setColorsTheme] = useState(
+        localStorage.getItem('colorsTheme') &&
+            localStorage.getItem('colorsTheme').length > 0
+            ? JSON.parse(localStorage.getItem('colorsTheme'))
+            : generateColor()
+    );
+
     const generateBD = (monthAgo) => {
         let dateDiapasone = [];
+
         for (let i = 0; i < 30 * monthAgo * 2; i++) {
             dateDiapasone.push({
                 date: new Date(
@@ -37,9 +62,8 @@ function App() {
                 ],
             });
         }
+
         localStorage.setItem('DB', JSON.stringify(dateDiapasone));
-        // const saved = JSON.parse(localStorage.getItem('DB') || '[]');
-        // setCurrentTasks(saved);
     };
 
     const checkSizeLocalStorage = () => {
@@ -61,27 +85,14 @@ function App() {
     };
 
     useEffect(() => {
-        generateBD(1);
         checkSizeLocalStorage();
+
+        if (!!localStorage.getItem('DB')) {
+            return;
+        } else {
+            generateBD(1);
+        }
     }, []);
-
-    const generateColor = () => {
-        // setTheArray((oldArray) => [...oldArray, newElement]);
-        const getRandomColor = () => {
-            let letters = '0123456789ABCD';
-            let color = '#';
-            for (let i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * letters.length)];
-            }
-            return color;
-        };
-
-        return {
-            from: getRandomColor(),
-            to: getRandomColor(),
-        };
-    };
-    const [colorsTheme, setColorsTheme] = useState(generateColor());
 
     let weekDays = [
         'Воскресенье',

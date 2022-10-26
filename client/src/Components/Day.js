@@ -81,10 +81,7 @@ const Day = ({ date, monthNames, weekDays }) => {
 
         let filter = copyDB.filter((calendarDay) => {
             if (!calendarDay.date || !date) return false;
-            // console.log('date', date);
-            // console.log('date', transformDateToString(date));
-            // console.log('data', transformDateToString(calendarDay.date));
-            // console.log('-------------------------------');
+
             return (
                 transformDateToString(calendarDay.date) ===
                 transformDateToString(date)

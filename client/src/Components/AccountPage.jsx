@@ -90,6 +90,7 @@ const AccountPage = ({ setColorsTheme, colorsTheme, generateColor }) => {
         setIsNeedSaveColor(false);
         localStorage.setItem('isNeedSaveColor', JSON.stringify(false));
     };
+
     const randomColor = () => {
         setIsNeedSaveColor(false);
         localStorage.setItem('isNeedSaveColor', JSON.stringify(false));

@@ -5,7 +5,7 @@ import { IoTodaySharp } from 'react-icons/io5';
 import { MdChangeCircle } from 'react-icons/md';
 import { FaSave } from 'react-icons/fa';
 import { FaRandom } from 'react-icons/fa';
-import LoginPage from './LoginPage';
+import LoginPage from './Login';
 
 const StyledLoginPage = styled.div`
     height: 100%;

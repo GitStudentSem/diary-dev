@@ -29,7 +29,7 @@ const StyledHeaderDay = styled.p`
 const StyledHeaderDayOfWeek = styled(StyledHeaderDay)`
     color: rgba(255, 255, 255, 0.6);
 `;
-const StyledTaskList = styled.ul`
+const StyledTasksList = styled.ul`
     list-style-type: none;
     padding: 0 5px 0 0;
     height: calc(100% - 75px); // Высота зависит от шапки
@@ -144,6 +144,7 @@ const Day = ({ date, monthNames, weekDays }) => {
                 <StyledButton
                     onClick={(e) => {
                         e.preventDefault();
+                        // console.log(date.toISOString().slice(0, 10));
                         setCurrentTasks([
                             ...currentTasks,
                             { text, isImportant },
@@ -164,7 +165,7 @@ const Day = ({ date, monthNames, weekDays }) => {
                 </StyledButton>
             </StyledForm>
 
-            <StyledTaskList>
+            <StyledTasksList>
                 {currentTasks.map((taskItem, index) => {
                     return (
                         <StyledTask key={taskItem.text + index}>
@@ -187,7 +188,7 @@ const Day = ({ date, monthNames, weekDays }) => {
                         </StyledTask>
                     );
                 })}
-            </StyledTaskList>
+            </StyledTasksList>
         </StyledDay>
     );
 };

@@ -45,7 +45,7 @@ const StyledButton = styled.button`
         background-color: rgba(255, 255, 255, 0.2);
     }
 `;
-const LoginPage = () => {
+const Login = () => {
     const [email, setEmail] = useState('');
     const [isValidEmail, setIsValidEmail] = useState(true);
 
@@ -113,4 +113,4 @@ const LoginPage = () => {
         </>
     );
 };
-export default LoginPage;
+export default Login;

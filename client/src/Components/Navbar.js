@@ -33,6 +33,13 @@ const StyledButton = styled.button`
 `;
 
 const Navbar = ({ monthNames, date, setDate }) => {
+    const getWeekNumber = () => {
+        const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+        const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
+
+        return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+    };
+
     return (
         <StyledNavbar>
             <NavigationFromDate
@@ -86,7 +93,7 @@ const Navbar = ({ monthNames, date, setDate }) => {
                     );
                 }}
             >
-                <p>неделя</p>
+                <p>неделя {getWeekNumber()}</p>
             </NavigationFromDate>
         </StyledNavbar>
     );

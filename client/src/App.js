@@ -2,9 +2,10 @@ import Main from './Components/Main';
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import LoginPage from './Components/LoginPage';
+import Login from './Components/Login';
 import AccountPage from './Components/AccountPage';
 import PrivateRoute from './Components/PrivateRoute';
+import NotFoundPage from './Components/NotFoundPage';
 
 const StyledApp = styled.div`
     background: #fff;
@@ -21,10 +22,10 @@ function App() {
     const [date, setDate] = useState(new Date());
     const generateColor = () => {
         const getRandomColor = () => {
-            let letters = '0123456789ABCDEF';
+            let letters = '0123456789ABCD';
             let color = '#';
             for (let i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
+                color += letters[Math.floor(Math.random() * letters.length)];
             }
             return color;
         };
@@ -86,7 +87,8 @@ function App() {
                             />
                         }
                     />
-                    <Route path='/login' element={<LoginPage />} />
+                    <Route path='*' element={<NotFoundPage />} />
+                    {/* <Route path='/login' element={<Login />} /> */}
                 </Routes>
             </StyledApp>
         </BrowserRouter>

@@ -1,7 +1,6 @@
 import Main from './Components/Main';
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
-import useSetColor from './Hooks/useSetColor';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from './Components/LoginPage';
 import AccountPage from './Components/AccountPage';
@@ -87,18 +86,6 @@ function App() {
                             />
                         }
                     />
-                    {/* <Route
-                        path='/account'
-                        element={
-                            <PrivateRoute hasAccess={true}>
-                                <AccountPage
-                                    setColorsTheme={setColorsTheme}
-                                    colorsTheme={colorsTheme}
-                                    setColor={setColor}
-                                />
-                            </PrivateRoute>
-                        }
-                    /> */}
                     <Route path='/login' element={<LoginPage />} />
                 </Routes>
             </StyledApp>

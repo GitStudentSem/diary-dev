@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/macro';
-import { AiFillCheckCircle, AiFillDelete } from 'react-icons/ai';
+import { AiFillCheckCircle } from 'react-icons/ai';
 import Star from './Star';
+import TasksList from './TasksList';
 
 const StyledDay = styled.div`
     position: relative;
@@ -28,35 +29,6 @@ const StyledHeaderDay = styled.p`
 `;
 const StyledHeaderDayOfWeek = styled(StyledHeaderDay)`
     color: rgba(255, 255, 255, 0.6);
-`;
-const StyledTasksList = styled.ul`
-    list-style-type: none;
-    padding: 0 5px 0 0;
-    height: calc(100% - 75px); // Высота зависит от шапки
-    overflow-y: auto;
-`;
-
-const StyledTask = styled.li`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px;
-    width: 100%;
-    transition: 0.3s;
-    border-radius: 10px;
-    cursor: pointer;
-    &:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-    }
-`;
-const StyledTaskText = styled.p`
-    flex-grow: 1;
-    text-align: start;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    padding-right: 10px;
-    overflow: hidden;
-    margin-left: 5px;
 `;
 
 const StyledForm = styled.form`
@@ -95,26 +67,35 @@ const StyledButton = styled.button`
 const Day = ({ date, monthNames, weekDays }) => {
     const [text, setText] = useState('');
     const [isImportant, setIsImportant] = useState(false);
-    const [currentTasks, setCurrentTasks] = useState([]);
 
-    useEffect(() => {
-        const saved = JSON.parse(localStorage.getItem('currentTasks') || '[]');
-        setCurrentTasks(saved);
-    }, []);
+    const transformDateToString = (dateToString) => {
+        if (typeof dateToString === 'string') {
+            return dateToString.slice(0, 10);
+        }
 
-    useEffect(() => {
-        localStorage.setItem('currentTasks', JSON.stringify(currentTasks));
-    }, [currentTasks]);
+        return dateToString.toISOString().slice(0, 10);
+    };
 
-    const deleteTask = (index) => {
-        const reducedArr = [...currentTasks];
-        reducedArr.splice(index, 1);
-        setCurrentTasks(reducedArr);
+    const getTaskOnDay = () => {
+        const copyDB = JSON.parse(localStorage.getItem('DB') || '[]');
+
+        let filter = copyDB.filter((calendarDay) => {
+            if (!calendarDay.date || !date) return false;
+            // console.log('date', date);
+            // console.log('date', transformDateToString(date));
+            // console.log('data', transformDateToString(calendarDay.date));
+            // console.log('-------------------------------');
+            return (
+                transformDateToString(calendarDay.date) ===
+                transformDateToString(date)
+            );
+        });
+        return filter;
     };
 
     return (
         <StyledDay>
-            <StyledHeader>
+            <StyledHeader onClick={getTaskOnDay}>
                 {date ? (
                     <>
                         <StyledHeaderDay>
@@ -145,10 +126,7 @@ const Day = ({ date, monthNames, weekDays }) => {
                     onClick={(e) => {
                         e.preventDefault();
                         // console.log(date.toISOString().slice(0, 10));
-                        setCurrentTasks([
-                            ...currentTasks,
-                            { text, isImportant },
-                        ]);
+
                         setText('');
                         setIsImportant(false);
                     }}
@@ -165,30 +143,7 @@ const Day = ({ date, monthNames, weekDays }) => {
                 </StyledButton>
             </StyledForm>
 
-            <StyledTasksList>
-                {currentTasks.map((taskItem, index) => {
-                    return (
-                        <StyledTask key={taskItem.text + index}>
-                            <Star
-                                setValue={setIsImportant}
-                                value={isImportant}
-                            />
-
-                            <StyledTaskText>{taskItem.text}</StyledTaskText>
-                            <StyledButton
-                                onClick={() => {
-                                    deleteTask(index);
-                                }}
-                            >
-                                <AiFillDelete
-                                    size={20}
-                                    fill='rgba(255, 255, 255, 0.8)'
-                                />
-                            </StyledButton>
-                        </StyledTask>
-                    );
-                })}
-            </StyledTasksList>
+            <TasksList taskOnDay={getTaskOnDay()} />
         </StyledDay>
     );
 };

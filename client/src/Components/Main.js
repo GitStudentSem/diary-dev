@@ -21,7 +21,7 @@ const Main = ({ date, monthNames, weekDays, setDate }) => {
             <StyledMain>
                 {weekDays.map((day, index) => (
                     <Day
-                        key={index}
+                        key={day}
                         monthNames={monthNames}
                         date={
                             new Date(

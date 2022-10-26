@@ -1,10 +1,9 @@
 import Main from './Components/Main';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/macro';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Login from './Components/Login';
+import { BrowserRouter, Routes, Route, json } from 'react-router-dom';
 import AccountPage from './Components/AccountPage';
-import PrivateRoute from './Components/PrivateRoute';
+// import PrivateRoute from './Components/PrivateRoute';
 import NotFoundPage from './Components/NotFoundPage';
 
 const StyledApp = styled.div`
@@ -20,7 +19,54 @@ const StyledApp = styled.div`
 
 function App() {
     const [date, setDate] = useState(new Date());
+
+    const generateBD = (monthAgo) => {
+        let dateDiapasone = [];
+        for (let i = 0; i < 30 * monthAgo * 2; i++) {
+            dateDiapasone.push({
+                date: new Date(
+                    date.getFullYear(),
+                    date.getMonth() - monthAgo,
+                    date.getDate() + i
+                ),
+                tasksOnDay: [
+                    {
+                        text: 'asdasdad',
+                        isImportant: true,
+                    },
+                ],
+            });
+        }
+        localStorage.setItem('DB', JSON.stringify(dateDiapasone));
+        // const saved = JSON.parse(localStorage.getItem('DB') || '[]');
+        // setCurrentTasks(saved);
+    };
+
+    const checkSizeLocalStorage = () => {
+        let _lsTotal = 0,
+            _xLen,
+            _x;
+        for (_x in localStorage) {
+            if (!localStorage.hasOwnProperty(_x)) {
+                continue;
+            }
+            _xLen = (localStorage[_x].length + _x.length) * 2;
+            _lsTotal += _xLen;
+            // console.log(
+            //     _x.substr(0, 50) + ' = ' + (_xLen / 1024).toFixed(2) + ' KB'
+            // );
+        }
+        console.log('Всего занято = ' + (_lsTotal / 1024).toFixed(2) + ' KB');
+        return _lsTotal / 1024;
+    };
+
+    useEffect(() => {
+        generateBD(1);
+        checkSizeLocalStorage();
+    }, []);
+
     const generateColor = () => {
+        // setTheArray((oldArray) => [...oldArray, newElement]);
         const getRandomColor = () => {
             let letters = '0123456789ABCD';
             let color = '#';
@@ -29,11 +75,10 @@ function App() {
             }
             return color;
         };
+
         return {
             from: getRandomColor(),
             to: getRandomColor(),
-            // from: `#${Math.floor(Math.random() * 0xffffff).toString(16)}`,
-            // to: `#${Math.floor(Math.random() * 0xffffff).toString(16)}`,
         };
     };
     const [colorsTheme, setColorsTheme] = useState(generateColor());
@@ -47,6 +92,7 @@ function App() {
         'Пятница',
         'Суббота',
     ];
+
     let monthNames = [
         'Январь',
         'Февраль',

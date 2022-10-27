@@ -19,11 +19,7 @@ const StyledHeaderDayOfWeek = styled(StyledHeaderDay)`
 
 const DayHeader = ({ date, monthNames, weekDays }) => {
     return (
-        <StyledHeader
-            onClick={() => {
-                localStorage.removeItem('DB');
-            }}
-        >
+        <StyledHeader>
             {date ? (
                 <>
                     <StyledHeaderDay>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 import TasksList from './TasksList';
 import CreateTasksForm from './CreateTasksForm';
@@ -8,11 +8,24 @@ const StyledDay = styled.div`
     position: relative;
     width: 24%;
     border-radius: 10px;
-    height: 50%;
-    max-height: 48%;
+    height: 48%;
     background-color: rgba(255, 255, 255, 0.2);
     padding: 5px;
     overflow: hidden;
+`;
+const StyledIsdev = styled.div`
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: ${(props) => (props.isDev ? '100%' : '0px')};
+    height: ${(props) => (props.isDev ? '100%' : '0px')};
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(${(props) => (props.isDev ? '3px' : '0px')});
 `;
 
 const Day = ({
@@ -21,6 +34,7 @@ const Day = ({
     weekDays,
     updateLocalStorageDB,
     loadLocalStorageDB,
+    isDev,
 }) => {
     const transformDateToString = (dateToString) => {
         if (typeof dateToString === 'string') {
@@ -74,15 +88,13 @@ const Day = ({
     };
 
     return (
-        <StyledDay>
+        <StyledDay isDev={isDev}>
             <DayHeader
                 date={date}
                 monthNames={monthNames}
                 weekDays={weekDays}
             />
-
             <CreateTasksForm addTaskInStorage={addTaskInStorage} />
-
             <TasksList
                 tasksOnDayState={getTaskOnDay()}
                 transformDateToString={transformDateToString}
@@ -91,6 +103,7 @@ const Day = ({
                 updateLocalStorageDB={updateLocalStorageDB}
                 loadLocalStorageDB={loadLocalStorageDB}
             />
+            {isDev && <StyledIsdev isDev={isDev}>Скоро появится</StyledIsdev>}
         </StyledDay>
     );
 };

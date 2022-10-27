@@ -42,7 +42,8 @@ const Main = ({
                         loadLocalStorageDB={loadLocalStorageDB}
                     />
                 ))}
-                <Day />
+
+                <Day isDev />
             </StyledMain>
         </StyledWrapper>
     );

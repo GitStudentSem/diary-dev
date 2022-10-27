@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components/macro';
-import { AiFillDelete } from 'react-icons/ai';
-import Star from './Star';
+import { AiFillDelete, AiFillStar } from 'react-icons/ai';
 
 const StyledTask = styled.li`
     display: flex;
@@ -44,24 +43,100 @@ const StyledButton = styled.button`
     }
 `;
 
-const TaskItem = ({ taskItem, index }) => {
-    // date.toISOString().slice(0, 10)
+const TaskItem = ({
+    taskItem,
+    index,
+    transformDateToString,
+    setTaskOnDay,
+    date,
+    updateLocalStorageDB,
+    loadLocalStorageDB,
+}) => {
     const [isImportant, setIsImportant] = useState(false);
 
-    const deleteTask = (index) => {
-        // const reducedArr = [...currentTasks];
-        // reducedArr.splice(index, 1);
-        // setCurrentTasks(reducedArr);
+    const changeIsImportant = (index) => {
+        const currentDBInStorage = loadLocalStorageDB();
+
+        for (let i = 0; i < currentDBInStorage.length; i++) {
+            let copyTasksInfo = currentDBInStorage[i];
+
+            if (
+                transformDateToString(copyTasksInfo.date) ===
+                transformDateToString(date)
+            ) {
+                for (
+                    let indexTaskInDB = 0;
+                    indexTaskInDB < copyTasksInfo.tasksOnDay.length;
+                    indexTaskInDB++
+                ) {
+                    if (!copyTasksInfo.tasksOnDay[indexTaskInDB]) return;
+
+                    if (indexTaskInDB === index) {
+                        copyTasksInfo.tasksOnDay[indexTaskInDB].isImportant =
+                            !copyTasksInfo?.tasksOnDay[indexTaskInDB]
+                                ?.isImportant;
+                        // console.log('index true');
+                    } else {
+                        copyTasksInfo.tasksOnDay[indexTaskInDB].isImportant =
+                            copyTasksInfo?.tasksOnDay[
+                                indexTaskInDB
+                            ]?.isImportant;
+                        // console.log('index false');
+                    }
+                }
+
+                setIsImportant(copyTasksInfo.tasksOnDay[index].isImportant);
+            }
+        }
+        updateLocalStorageDB(currentDBInStorage);
+    };
+
+    const deleteTasksFromStorage = (index) => {
+        const currentDBInStorage = loadLocalStorageDB();
+
+        for (let i = 0; i < currentDBInStorage.length; i++) {
+            let copyTasksOnDay = currentDBInStorage[i];
+            if (
+                transformDateToString(copyTasksOnDay.date) ===
+                transformDateToString(date)
+            ) {
+                let changedTasks = copyTasksOnDay.tasksOnDay;
+                changedTasks.splice(index, 1);
+                copyTasksOnDay = {
+                    date,
+                    tasksOnDay: changedTasks,
+                };
+
+                updateLocalStorageDB(currentDBInStorage);
+                setTaskOnDay({
+                    date,
+                    tasksOnDay: copyTasksOnDay,
+                });
+            }
+        }
     };
 
     return (
         <StyledTask>
-            <Star setValue={setIsImportant} value={isImportant} />
+            <StyledButton
+                onClick={() => {
+                    changeIsImportant(index);
+                }}
+            >
+                <AiFillStar
+                    size={20}
+                    fill={
+                        isImportant
+                            ? 'rgb(255, 255, 255)'
+                            : 'rgba(255, 255, 255, 0.6)'
+                    }
+                />
+            </StyledButton>
 
             <StyledTaskText>{taskItem.text}</StyledTaskText>
             <StyledButton
                 onClick={() => {
-                    deleteTask(index);
+                    deleteTasksFromStorage(index);
                 }}
             >
                 <AiFillDelete size={20} fill='rgba(255, 255, 255, 0.8)' />

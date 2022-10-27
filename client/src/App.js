@@ -19,6 +19,21 @@ const StyledApp = styled.div`
 
 function App() {
     const [date, setDate] = useState(new Date());
+    const [stringData, setStringData] = useState(
+        // JSON.stringify(newLocalStorageDB)
+        JSON.stringify(localStorage.getItem('DB') || '[]')
+    );
+
+    const updateLocalStorageDB = (newLocalStorageDB) => {
+        if (!newLocalStorageDB) return;
+        setStringData(JSON.stringify(newLocalStorageDB));
+        localStorage.setItem('DB', JSON.stringify(newLocalStorageDB));
+        // updateLocalStorageDB(newLocalStarageDB);
+    };
+
+    const loadLocalStorageDB = () => {
+        return JSON.parse(localStorage.getItem('DB') || '[]');
+    };
 
     const generateColor = () => {
         // setTheArray((oldArray) => [...oldArray, newElement]);
@@ -30,7 +45,7 @@ function App() {
             }
             return color;
         };
-        console.log('generated');
+
         return {
             from: getRandomColor(),
             to: getRandomColor(),
@@ -44,26 +59,27 @@ function App() {
             : generateColor()
     );
 
-    const generateBD = (monthAgo) => {
+    const generateBD = (daysAgo) => {
         let dateDiapasone = [];
 
-        for (let i = 0; i < 30 * monthAgo * 2; i++) {
+        for (let i = 0; i < daysAgo; ++i) {
             dateDiapasone.push({
                 date: new Date(
                     date.getFullYear(),
-                    date.getMonth() - monthAgo,
+                    date.getMonth(),
                     date.getDate() + i
                 ),
                 tasksOnDay: [
                     {
-                        text: 'asdasdad',
-                        isImportant: true,
+                        text: 'false',
+                        isImportant: false,
                     },
                 ],
             });
         }
 
-        localStorage.setItem('DB', JSON.stringify(dateDiapasone));
+        console.log('generated BD', dateDiapasone);
+        updateLocalStorageDB(dateDiapasone);
     };
 
     const checkSizeLocalStorage = () => {
@@ -76,23 +92,34 @@ function App() {
             }
             _xLen = (localStorage[_x].length + _x.length) * 2;
             _lsTotal += _xLen;
-            // console.log(
-            //     _x.substr(0, 50) + ' = ' + (_xLen / 1024).toFixed(2) + ' KB'
-            // );
         }
         console.log('Всего занято = ' + (_lsTotal / 1024).toFixed(2) + ' KB');
+        // console.table(loadLocalStorageDB()));
         return _lsTotal / 1024;
     };
 
+    // генерация бд
     useEffect(() => {
-        checkSizeLocalStorage();
-
-        if (!!localStorage.getItem('DB')) {
+        if (
+            !!localStorage.getItem('DB')
+            // Array.isArray(loadLocalStorageDB())
+        ) {
+            updateLocalStorageDB(loadLocalStorageDB());
+            setStringData(JSON.stringify(loadLocalStorageDB()));
             return;
         } else {
-            generateBD(1);
+            generateBD(60);
         }
+
+        checkSizeLocalStorage();
     }, []);
+
+    useEffect(() => {
+        console.log('updatedDB');
+        updateLocalStorageDB(loadLocalStorageDB());
+    }, [stringData]);
+
+    // useEffect(() => {});
 
     let weekDays = [
         'Воскресенье',
@@ -131,6 +158,8 @@ function App() {
                                 date={date}
                                 weekDays={weekDays}
                                 setDate={setDate}
+                                updateLocalStorageDB={updateLocalStorageDB}
+                                loadLocalStorageDB={loadLocalStorageDB}
                             />
                         }
                     />

@@ -9,16 +9,28 @@ const StyledTasksList = styled.ul`
     overflow-y: auto;
 `;
 
-const TasksList = ({ taskOnDay }) => {
+const TasksList = ({
+    tasksOnDayState,
+    transformDateToString,
+    setTaskOnDay,
+    date,
+    updateLocalStorageDB,
+    loadLocalStorageDB,
+}) => {
     return (
         <StyledTasksList>
-            {taskOnDay.length > 0 &&
-                taskOnDay[0].tasksOnDay.map((taskItem, index) => {
+            {tasksOnDayState?.tasksOnDay?.length > 0 &&
+                tasksOnDayState.tasksOnDay.map((taskItem, index) => {
                     return (
                         <TaskItem
                             key={taskItem.text + index}
                             taskItem={taskItem}
                             index={index}
+                            transformDateToString={transformDateToString}
+                            setTaskOnDay={setTaskOnDay}
+                            date={date}
+                            updateLocalStorageDB={updateLocalStorageDB}
+                            loadLocalStorageDB={loadLocalStorageDB}
                         />
                     );
                 })}

@@ -67,9 +67,11 @@ const AccountPage = ({ setColorsTheme, colorsTheme, generateColor }) => {
         const savedColorsTheme = JSON.parse(
             localStorage.getItem('colorsTheme')
         );
+
         const savedIsNeedSaveColor = JSON.parse(
             localStorage.getItem('isNeedSaveColor')
         );
+
         setIsNeedSaveColor(savedIsNeedSaveColor);
 
         if (!savedColorsTheme) return;

@@ -14,14 +14,21 @@ const StyledMain = styled.div`
     height: 100%;
 `;
 
-const Main = ({ date, monthNames, weekDays, setDate }) => {
+const Main = ({
+    date,
+    monthNames,
+    weekDays,
+    setDate,
+    updateLocalStorageDB,
+    loadLocalStorageDB,
+}) => {
     return (
         <StyledWrapper>
             <Navbar monthNames={monthNames} date={date} setDate={setDate} />
             <StyledMain>
                 {weekDays.map((day, index) => (
                     <Day
-                        key={day}
+                        key={day + index}
                         monthNames={monthNames}
                         date={
                             new Date(
@@ -31,6 +38,8 @@ const Main = ({ date, monthNames, weekDays, setDate }) => {
                             )
                         }
                         weekDays={weekDays}
+                        updateLocalStorageDB={updateLocalStorageDB}
+                        loadLocalStorageDB={loadLocalStorageDB}
                     />
                 ))}
                 <Day />

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/macro';
-import { AiFillCheckCircle } from 'react-icons/ai';
-import Star from './Star';
 import TasksList from './TasksList';
+import CreateTasksForm from './CreateTasksForm';
+import DayHeader from '../DayHeader';
 
 const StyledDay = styled.div`
     position: relative;
@@ -15,59 +15,13 @@ const StyledDay = styled.div`
     overflow: hidden;
 `;
 
-const StyledHeader = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 5px;
-`;
-
-const StyledHeaderDay = styled.p`
-    font-weight: 500;
-    font-size: 18px;
-    color: rgba(255, 255, 255, 0.8);
-`;
-const StyledHeaderDayOfWeek = styled(StyledHeaderDay)`
-    color: rgba(255, 255, 255, 0.6);
-`;
-
-const StyledForm = styled.form`
-    display: flex;
-`;
-const StyledInput = styled.input`
-    outline: none;
-    border: none;
-    flex: 1;
-    background-color: rgba(255, 255, 255, 0.2);
-    padding: 2px 5px;
-    border-radius: 5px;
-    &::placeholder {
-        color: rgb(255, 255, 255);
-    }
-`;
-const StyledButton = styled.button`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    outline: none;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    margin: 0;
-    padding: 0;
-    transition: all 0.3s;
-    padding: 2px 5px;
-    margin-left: 5px;
-    border-radius: 5px;
-    &:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-    }
-`;
-
-const Day = ({ date, monthNames, weekDays }) => {
-    const [text, setText] = useState('');
-    const [isImportant, setIsImportant] = useState(false);
-
+const Day = ({
+    date,
+    monthNames,
+    weekDays,
+    updateLocalStorageDB,
+    loadLocalStorageDB,
+}) => {
     const transformDateToString = (dateToString) => {
         if (typeof dateToString === 'string') {
             return dateToString.slice(0, 10);
@@ -77,9 +31,10 @@ const Day = ({ date, monthNames, weekDays }) => {
     };
 
     const getTaskOnDay = () => {
-        const copyDB = JSON.parse(localStorage.getItem('DB') || '[]');
+        if (!loadLocalStorageDB) return;
+        const currentDBInStorage = loadLocalStorageDB();
 
-        let filter = copyDB.filter((calendarDay) => {
+        let filter = currentDBInStorage.filter((calendarDay) => {
             if (!calendarDay.date || !date) return false;
 
             return (
@@ -87,60 +42,55 @@ const Day = ({ date, monthNames, weekDays }) => {
                 transformDateToString(date)
             );
         });
-        return filter;
+
+        // console.log(filter[0]);
+        if (filter[0]) return filter[0];
+        return;
+    };
+    const [tasksOnDayState, setTaskOnDay] = useState(getTaskOnDay());
+
+    const addTaskInStorage = (newTask) => {
+        const currentDBInStorage = loadLocalStorageDB();
+
+        for (let i = 0; i < currentDBInStorage.length; i++) {
+            const calendarDay = currentDBInStorage[i];
+            if (
+                transformDateToString(calendarDay.date) ===
+                transformDateToString(date)
+            ) {
+                let copyTasks = [...currentDBInStorage[i]?.tasksOnDay, newTask];
+                currentDBInStorage[i] = {
+                    date,
+                    tasksOnDay: copyTasks,
+                };
+
+                updateLocalStorageDB(currentDBInStorage);
+                setTaskOnDay({
+                    date,
+                    tasksOnDay: copyTasks,
+                });
+            }
+        }
     };
 
     return (
         <StyledDay>
-            <StyledHeader onClick={getTaskOnDay}>
-                {date ? (
-                    <>
-                        <StyledHeaderDay>
-                            {monthNames[date.getMonth()]} {date.getDate()}
-                        </StyledHeaderDay>
+            <DayHeader
+                date={date}
+                monthNames={monthNames}
+                weekDays={weekDays}
+            />
 
-                        <StyledHeaderDayOfWeek>
-                            {weekDays[date.getDay()]}
-                        </StyledHeaderDayOfWeek>
-                    </>
-                ) : (
-                    <StyledHeaderDay>Другие задачи</StyledHeaderDay>
-                )}
-            </StyledHeader>
+            <CreateTasksForm addTaskInStorage={addTaskInStorage} />
 
-            <StyledForm>
-                <StyledInput
-                    type='text'
-                    value={text}
-                    onChange={(e) => {
-                        setText(e.target.value);
-                    }}
-                    placeholder='Какие планы?'
-                />
-                <Star setValue={setIsImportant} value={isImportant} />
-
-                <StyledButton
-                    onClick={(e) => {
-                        e.preventDefault();
-                        // console.log(date.toISOString().slice(0, 10));
-
-                        setText('');
-                        setIsImportant(false);
-                    }}
-                    disabled={!text}
-                >
-                    <AiFillCheckCircle
-                        size={20}
-                        fill={
-                            text
-                                ? 'rgba(255, 255, 255)'
-                                : 'rgba(255, 255, 255, 0.6)'
-                        }
-                    />
-                </StyledButton>
-            </StyledForm>
-
-            <TasksList taskOnDay={getTaskOnDay()} />
+            <TasksList
+                tasksOnDayState={getTaskOnDay()}
+                transformDateToString={transformDateToString}
+                setTaskOnDay={setTaskOnDay}
+                date={date}
+                updateLocalStorageDB={updateLocalStorageDB}
+                loadLocalStorageDB={loadLocalStorageDB}
+            />
         </StyledDay>
     );
 };

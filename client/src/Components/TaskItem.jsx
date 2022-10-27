@@ -74,7 +74,6 @@ const TaskItem = ({
                     if (!taskOnDay) return;
 
                     if (!index && index !== 0) {
-                        console.log('!index', taskOnDay.isImportant);
                         setIsImportant(taskOnDay.isImportant);
                         updateLocalStorageDB(currentDBInStorage);
                     } else if (indexTaskInDB === index) {
@@ -86,7 +85,6 @@ const TaskItem = ({
                             copyTasksInfo.tasksOnDay[index].isImportant
                         );
                         updateLocalStorageDB(currentDBInStorage);
-                        // console.log('index true');
                     } else if (indexTaskInDB !== index) {
                         taskOnDay.isImportant =
                             copyTasksInfo?.tasksOnDay[

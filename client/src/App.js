@@ -115,7 +115,7 @@ function App() {
     }, []);
 
     useEffect(() => {
-        console.log('updatedDB');
+        console.log('updated DB');
         updateLocalStorageDB(loadLocalStorageDB());
     }, [stringData]);
 
